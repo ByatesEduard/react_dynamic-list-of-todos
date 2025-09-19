@@ -38,11 +38,7 @@ const TodoListComponent: React.FC<TodoListProps> = ({
           <tr
             key={todo.id}
             data-cy="todo"
-            className={
-              todo.completed
-                ? 'has-background-info-light'
-                : ''
-            }
+            className={todo.completed ? 'has-background-info-light' : ''}
           >
             <td className="is-vcentered">{index + 1}</td>
             <td className="is-vcentered">
@@ -61,10 +57,8 @@ const TodoListComponent: React.FC<TodoListProps> = ({
             </td>
             <td className="has-text-right is-vcentered">
               <button
-                data-cy="selectButton"
-                className={`button ${
-                  selectedTodoId === todo.id ? 'is-link' : ''
-                }`}
+                data-cy="showButton"
+                className={`button ${selectedTodoId === todo.id ? 'is-link' : ''}`}
                 type="button"
                 onClick={() => handleButtonClick(todo)}
               >

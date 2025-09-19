@@ -31,15 +31,13 @@ export const App: React.FC = () => {
     setTimeout(() => {
       getTodos()
         .then(setTodos)
-        .catch(() =>
-          setError('Something went wrong. Please, try again later.'),
-        )
+        .catch(() => setError('Something went wrong. Please, try again later.'))
         .finally(() => setLoading(false));
     }, 1000);
   }, []);
 
   const filteredTodos = useMemo(() => {
-    return todos.filter((todo) => {
+    return todos.filter(todo => {
       const matchesStatus =
         filter === Type.All ||
         (filter === Type.Active && !todo.completed) ||
