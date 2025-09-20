@@ -61,7 +61,13 @@ export const App: React.FC = () => {
 
             <div className="block">
               {loading && <Loader />}
-              {!loading && <TodoList todos={filteredTodos} />}
+              {!loading && (
+                <TodoList
+                  todos={filteredTodos}
+                  onSelectTodo={setSelectedTodo}
+                  selectedTodoId={selectedTodo?.id}
+                />
+              )}
               {error && <p className="has-text-danger">{error}</p>}
             </div>
           </div>
