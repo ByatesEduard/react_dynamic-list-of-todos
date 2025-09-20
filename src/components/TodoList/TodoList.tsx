@@ -13,7 +13,10 @@ const TodoListComponent: React.FC<TodoListProps> = ({
   onSelectTodo,
 }) => {
   const handleButtonClick = (todo: Todo) => {
-    if (!onSelectTodo) return;
+    if (!onSelectTodo) {
+      return;
+    }
+
     if (selectedTodoId === todo.id) {
       onSelectTodo(null);
     } else {
