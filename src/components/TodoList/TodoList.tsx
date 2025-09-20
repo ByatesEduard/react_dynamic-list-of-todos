@@ -13,9 +13,7 @@ const TodoListComponent: React.FC<TodoListProps> = ({
   onSelectTodo,
 }) => {
   const handleButtonClick = (todo: Todo) => {
-    if (!onSelectTodo) {
-      return;
-    }
+    if (!onSelectTodo) return;
 
     if (selectedTodoId === todo.id) {
       onSelectTodo(null);
@@ -52,11 +50,11 @@ const TodoListComponent: React.FC<TodoListProps> = ({
 
             <td className="is-vcentered">
               {todo.completed ? (
-                <span className="icon" data-cy="completed">
+                <span className="icon" data-cy="iconCompleted">
                   <i className="fas fa-check" />
                 </span>
               ) : (
-                <span className="icon" data-cy="notCompleted">
+                <span className="icon" data-cy="iconNotCompleted">
                   <i className="fas fa-times" />
                 </span>
               )}
@@ -74,7 +72,13 @@ const TodoListComponent: React.FC<TodoListProps> = ({
                 type="button"
                 onClick={() => handleButtonClick(todo)}
               >
-                {selectedTodoId === todo.id ? 'Hide' : 'Show'}
+                <span className="icon">
+                  {selectedTodoId === todo.id ? (
+                    <i className="fas fa-eye-slash" />
+                  ) : (
+                    <i className="fas fa-eye" />
+                  )}
+                </span>
               </button>
             </td>
           </tr>
