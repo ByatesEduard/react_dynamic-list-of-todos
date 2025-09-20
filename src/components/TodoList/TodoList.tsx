@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 
 interface TodoListProps {
@@ -13,7 +14,9 @@ const TodoListComponent: React.FC<TodoListProps> = ({
   onSelectTodo,
 }) => {
   const handleButtonClick = (todo: Todo) => {
-    if (!onSelectTodo) return;
+    if (!onSelectTodo) {
+      return;
+    }
 
     if (selectedTodoId === todo.id) {
       onSelectTodo(null);
@@ -38,13 +41,13 @@ const TodoListComponent: React.FC<TodoListProps> = ({
       </thead>
 
       <tbody>
-        {todos.slice(0, 5).map(todo => (
+        {todos.map(todo => (
           <tr
             key={todo.id}
             data-cy="todo"
-            className={
-              selectedTodoId === todo.id ? 'has-background-info-light' : ''
-            }
+            className={classNames({
+              'has-background-info-light': selectedTodoId === todo.id,
+            })}
           >
             <td className="is-vcentered">{todo.id}</td>
 
@@ -61,7 +64,10 @@ const TodoListComponent: React.FC<TodoListProps> = ({
             </td>
 
             <td
-              className={`is-vcentered ${todo.completed ? 'has-text-success' : 'has-text-danger'}`}
+              className={classNames('is-vcentered', {
+                'has-text-success': todo.completed,
+                'has-text-danger': !todo.completed,
+              })}
             >
               {todo.title}
             </td>

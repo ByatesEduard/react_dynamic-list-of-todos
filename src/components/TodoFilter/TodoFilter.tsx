@@ -1,5 +1,5 @@
 import React from 'react';
-import { Type } from '../../App';
+import { Type } from '../../types/Filter';
 
 interface FilterProps {
   filter: Type;

@@ -10,12 +10,7 @@ import { Loader } from './components/Loader';
 
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
-
-export enum Type {
-  All = 'all',
-  Active = 'active',
-  Completed = 'completed',
-}
+import { Type } from './types/Filter';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -27,13 +22,10 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     setLoading(true);
-
-    setTimeout(() => {
-      getTodos()
-        .then(setTodos)
-        .catch(() => setError('Something went wrong. Please, try again later.'))
-        .finally(() => setLoading(false));
-    }, 1000);
+    getTodos()
+      .then(setTodos)
+      .catch(() => setError('Something went wrong. Please, try again later.'))
+      .finally(() => setLoading(false));
   }, []);
 
   const filteredTodos = useMemo(() => {
@@ -69,20 +61,17 @@ export const App: React.FC = () => {
 
             <div className="block">
               {loading && <Loader />}
-              {!loading && (
-                <TodoList
-                  todos={filteredTodos}
-                  selectedTodoId={selectedTodo?.id}
-                  onSelectTodo={setSelectedTodo}
-                />
-              )}
+              {!loading && <TodoList todos={filteredTodos} />}
               {error && <p className="has-text-danger">{error}</p>}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal todo={selectedTodo} onCloseModal={setSelectedTodo} />
+      <TodoModal
+        todo={selectedTodo}
+        onCloseModal={() => setSelectedTodo(null)}
+      />
     </>
   );
 };

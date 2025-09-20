@@ -12,13 +12,34 @@ type Props = {
 
 export const TodoModal: React.FC<Props> = ({ todo, onCloseModal }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     if (todo) {
+      let isCancelled = false;
+
       setUser(null);
-      getUser(todo.userId).then(setUser);
+      setError('');
+
+      getUser(todo.userId)
+        .then(loadedUser => {
+          if (!isCancelled) {
+            setUser(loadedUser);
+          }
+        })
+        .catch(() => {
+          if (!isCancelled) {
+            setError('Failed to load user. Please try again.');
+          }
+        });
+
+      return () => {
+        isCancelled = true;
+      };
     }
-  }, [todo?.id]);
+
+    return undefined;
+  }, [todo]);
 
   const handleClose = () => {
     onCloseModal(null);
@@ -32,7 +53,28 @@ export const TodoModal: React.FC<Props> = ({ todo, onCloseModal }) => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!user ? (
+      {error ? (
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <div
+              className="modal-card-title has-text-weight-medium"
+              data-cy="modal-header"
+            >
+              {`Todo #${todo.id}`}
+            </div>
+
+            <button
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onClick={handleClose}
+            />
+          </header>
+          <div className="modal-card-body">
+            <p className="has-text-danger">{error}</p>
+          </div>
+        </div>
+      ) : !user ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -68,7 +110,7 @@ export const TodoModal: React.FC<Props> = ({ todo, onCloseModal }) => {
               </strong>
 
               {' by '}
-              <a href={`mailto:${user.email}`}>{user.name}</a>
+              <a href={`mailto:${user!.email}`}>{user!.name}</a>
             </p>
           </div>
         </div>
